@@ -1,11 +1,19 @@
 diff --git a/config/main.py b/config/main.py
-index 3b92f66..5b0bb38 100755
+index 3b92f66..1876acd 100755
 --- a/config/main.py
 +++ b/config/main.py
-@@ -3312,5 +3312,44 @@ def autorestart(container_name, autorestart_status):
-
+@@ -9,6 +9,7 @@ import re
+ import syslog
+ import time
+ import netifaces
++import json
+ 
+ import sonic_device_util
+ import ipaddress
+@@ -3312,5 +3313,44 @@ def autorestart(container_name, autorestart_status):
+ 
      config_db.mod_entry('CONTAINER_FEATURE', container_name, {'auto_restart': autorestart_status})
-
+ 
 +@config.group(cls=AbbreviationGroup)
 +@click.pass_context
 +def switch(ctx):
@@ -47,4 +55,3 @@ index 3b92f66..5b0bb38 100755
 +
  if __name__ == '__main__':
      config()
-
