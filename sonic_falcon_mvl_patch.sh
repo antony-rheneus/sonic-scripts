@@ -69,10 +69,6 @@ buildimage_post_script()
     #PR 5519
     wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/shell_buildimage.patch
     patch -p1 < shell_buildimage.patch
-    #PR 5252
-    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/5252_ebtables.patch
-    patch -p1 < 5252_ebtables.patch
-    rm files/image_config/ebtables/ebtables.filter
 }
 
 utilities_post_script()
