@@ -119,6 +119,11 @@ master_sonic_fix()
    # echo "sonic-yang fix test"
    # patch -p1 < ./sonic_yang_wa_jun09.patch
 
+    # netlink rxBuf Size to 3M patch
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/netlink_rxBufSize.patch
+    patch -p1 --dry-run < ./netlink_rxBufSize.patch
+    patch -p1 < ./netlink_rxBufSize.patch
+
     # wheel
     sed -i '/keep pip installed/i \
 sudo https_proxy=$https_proxy LANG=C chroot $FILESYSTEM_ROOT pip install wheel' build_debian.sh
