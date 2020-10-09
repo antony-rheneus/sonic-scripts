@@ -280,8 +280,8 @@ sudo https_proxy=$https_proxy LANG=C chroot $FILESYSTEM_ROOT pip install wheel' 
     echo 'sudo sed -i "s/python3.6/python3/g" $FILESYSTEM_ROOT/etc/monit/conf.d/monit_snmp' >> files/build_templates/sonic_debian_extension.j2
 
     # Update redis version
-    sed -i 's/redis-tools=5:6.0.5-1~bpo10+1/redis-tools=5:6.0.6-1~bpo10+1/g' dockers/docker-base-buster/Dockerfile.j2
-    sed -i 's/redis-server=5:6.0.5-1~bpo10+1/redis-server=5:6.0.6-1~bpo10+1/g' dockers/docker-database/Dockerfile.j2
+    sed -i 's/redis-tools=5:6.0.5-1~bpo10+1/redis-tools/g' dockers/docker-base-buster/Dockerfile.j2
+    sed -i 's/redis-server=5:6.0.5-1~bpo10+1/redis-server/g' dockers/docker-database/Dockerfile.j2
 
     # sonic_generate_dump patch
     pushd src/sonic-utilities

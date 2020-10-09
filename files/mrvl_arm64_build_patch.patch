@@ -52,7 +52,7 @@ index 1959bb5..dfd98c6 100644
          python-meld3         \
  # Install redis-tools
 -        redis-tools=5:6.0.5-1~bpo10+1     \
-+        redis-tools=5:6.0.6-1~bpo10+1     \
++        redis-tools     \
  # common dependencies
          libpython2.7         \
          libdaemon0           \
@@ -65,7 +65,7 @@ index e14be96..6ffc2c3 100644
  
  # install redis-server
 -RUN apt-get install -y redis-server=5:6.0.5-1~bpo10+1
-+RUN apt-get install -y redis-server=5:6.0.6-1~bpo10+1
++RUN apt-get install -y redis-server
  
  {% if docker_database_debs.strip() -%}
  # Copy locally-built Debian package dependencies
