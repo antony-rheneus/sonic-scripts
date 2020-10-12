@@ -20,15 +20,15 @@ declare -a PATCHES=(P1 P2 P3 P4 P5 P6 P7 P8 P9)
 url="https://github.com/Azure"
 urlsai="https://patch-diff.githubusercontent.com/raw/opencomputeproject"
 
-declare -A P1=( [NAME]=sonic-buildimage [DIR]=. [PR]="3687 5252" [URL]="$url" [PREREQ]="" [POSTREQ]="")
-declare -A P2=( [NAME]=sonic-swss [DIR]=src/sonic-swss [PR]="1325 1273 1369 1407" [URL]="$url" [PREREQ]="" )
+declare -A P1=( [NAME]=sonic-buildimage [DIR]=. [PR]="3687 5500" [URL]="$url" [PREREQ]="" [POSTREQ]="buildimage_post_script")
+declare -A P2=( [NAME]=sonic-swss [DIR]=src/sonic-swss [PR]="1325 1273 1369 1407 " [URL]="$url" [PREREQ]="" [POSTREQ]="swss_post_script" )
 declare -A P3=( [NAME]=sonic-swss-common [DIR]=src/sonic-swss-common [PR]="" [URL]="$url" [PREREQ]="" )
 declare -A P4=( [NAME]=sonic-mgmt-framework [DIR]=src/sonic-mgmt-framework [PR]="" [URL]="$url" [PREREQ]="" )
 declare -A P5=( [NAME]=sonic-linux-kernel [DIR]=src/sonic-linux-kernel [PR]="" [URL]="$url" [PREREQ]="apply_buster_kernel" )
 declare -A P6=( [NAME]=sonic-platform-common [DIR]=src/sonic-platform-common [PR]="" [URL]="$url" [PREREQ]="" )
 declare -A P7=( [NAME]=sonic-snmpagent [DIR]=src/sonic-snmpagent [PR]="134" [URL]="$url" [PREREQ]="" )
 declare -A P8=( [NAME]=sonic-sairedis [DIR]=src/sonic-sairedis [PR]="643" [URL]="$url" [PREREQ]="" )
-declare -A P9=( [NAME]=sonic-utilities [DIR]=src/sonic-utilities [PR]="1140" [URL]="$url" [PREREQ]="" [POSTREQ]="")
+declare -A P9=( [NAME]=sonic-utilities [DIR]=src/sonic-utilities [PR]="" [URL]="$url" [PREREQ]="" [POSTREQ]="utilities_post_script")
 
 #
 # END of CONFIGURATIONS
@@ -64,6 +64,33 @@ pre_patch_help()
     log "make all"
     log ""
     log ""
+}
+swss_post_script()
+{
+    #PR 1454
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/shell_swss.patch
+    patch -p1 < shell_swss.patch
+}
+
+buildimage_post_script()
+{
+    #PR 5519
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/shell_buildimage.patch
+    patch -p1 < shell_buildimage.patch
+    #PR 5252
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/5252_ebtables.patch
+    patch -p1 < 5252_ebtables.patch
+    rm files/image_config/ebtables/ebtables.filter
+}
+
+utilities_post_script()
+{
+    #PR 1146
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/shell_utilities.patch
+    patch -p1 < shell_utilities.patch
+    #PR 1140
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/1140_portstat.patch
+    patch -p1 < 1140_portstat.patch
 }
 
 
@@ -279,8 +306,8 @@ sudo https_proxy=$https_proxy LANG=C chroot $FILESYSTEM_ROOT pip install wheel' 
     echo 'sudo sed -i "s/python3.6/python3/g" $FILESYSTEM_ROOT/etc/monit/conf.d/monit_snmp' >> files/build_templates/sonic_debian_extension.j2
 
     # Update redis version
-    sed -i 's/redis-tools=5:6.0.5-1~bpo10+1/redis-tools=5:6.0.6-1~bpo10+1/g' dockers/docker-base-buster/Dockerfile.j2
-    sed -i 's/redis-server=5:6.0.5-1~bpo10+1/redis-server=5:6.0.6-1~bpo10+1/g' dockers/docker-database/Dockerfile.j2
+    sed -i 's/redis-tools=5:6.0.5-1~bpo10+1/redis-tools/g' dockers/docker-base-buster/Dockerfile.j2
+    sed -i 's/redis-server=5:6.0.5-1~bpo10+1/redis-server/g' dockers/docker-database/Dockerfile.j2
 
     # sonic_generate_dump patch
     pushd src/sonic-utilities
