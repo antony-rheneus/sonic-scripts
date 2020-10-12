@@ -185,6 +185,14 @@ inband_mgmt(){\
 
 }
 
+nokia_hw_sku()
+{
+   mkdir -p device/nokia/armhf-nokia_ixs7215_52x-r0 
+   # Download hwsku
+   wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/mrvl-nokia_sonic_m0_hwsku.tgz
+   tar -C device/nokia/armhf-nokia_ixs7215_52x-r0 -xzf mrvl-nokia_sonic_m0_hwsku.tgz
+}
+
 apply_buster_kernel()
 {
     wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/armhf_kernel_4.19.67.patch
@@ -192,6 +200,12 @@ apply_buster_kernel()
     patch -p1 --dry-run < ./armhf_kernel_4.19.67.patch
     echo "Patching 4.19.67 armhf"
     patch -p1 < ./armhf_kernel_4.19.67.patch
+
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/mrvl-nokia_dtb_pct.patch
+
+    patch -p1 --dry-run < ./mrvl-nokia_dtb_pct.patch
+    echo "Patching DTB, PCT armhf"
+    patch -p1 < ./mrvl-nokia_dtb_pct.patch
 }
 
 build_kernel_buster()
@@ -234,6 +248,18 @@ master_armhf_fix()
     patch -p1 --dry-run < ./sonic_yang_wa_jun09.patch
     echo "sonic-yang fix test"
     patch -p1 < ./sonic_yang_wa_jun09.patch
+
+    # reboot syslog patch
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/reboot_syslog.patch
+    patch -p1 --dry-run < ./reboot_syslog.patch
+    echo "reboot_syslog fix test"
+    patch -p1 < ./reboot_syslog.patch
+
+    # 10G SFP LED  patch
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/mrvl_et6448m_10G_sfp_led.patch
+    patch -p1 --dry-run < ./mrvl_et6448m_10G_sfp_led.patch
+    echo "10G SFP LED fix test"
+    patch -p1 < ./mrvl_et6448m_10G_sfp_led.patch
 
     # wheel
     sed -i '/keep pip installed/i \
@@ -292,6 +318,8 @@ main()
     misc_workarounds
 
     inband_mgmt_fix
+
+    nokia_hw_sku
 
     build_kernel_buster
 

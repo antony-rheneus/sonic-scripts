@@ -1,0 +1,7 @@
+diff --git a/device/marvell/armhf-marvell_et6448m_52x-r0/et6448m/profile.ini b/device/marvell/armhf-marvell_et6448m_52x-r0/et6448m/profile.ini
+index c81a156..f766921 100644
+--- a/device/marvell/armhf-marvell_et6448m_52x-r0/et6448m/profile.ini
++++ b/device/marvell/armhf-marvell_et6448m_52x-r0/et6448m/profile.ini
+@@ -1 +1,2 @@
+ switchMacAddress=00:50:43:ee:ee:ee
++ledMode=ac3x65bits
