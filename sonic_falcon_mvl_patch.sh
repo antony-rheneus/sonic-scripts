@@ -146,6 +146,13 @@ master_sonic_fix()
     patch -p1 --dry-run < ./netlink_rxBufSize.patch
     patch -p1 < ./netlink_rxBufSize.patch
 
+    # reboot syslog patch
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/reboot_syslog.patch
+    patch -p1 --dry-run < ./reboot_syslog.patch
+    echo "reboot_syslog fix test"
+    patch -p1 < ./reboot_syslog.patch
+
+
     # wheel
     sed -i '/keep pip installed/i \
 sudo https_proxy=$https_proxy LANG=C chroot $FILESYSTEM_ROOT pip install wheel' build_debian.sh
