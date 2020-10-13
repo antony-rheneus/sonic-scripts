@@ -282,12 +282,6 @@ master_armhf_fix()
     echo "reboot_syslog fix test"
     patch -p1 < ./reboot_syslog.patch
 
-    # 10G SFP LED  patch
-    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/mrvl_et6448m_10G_sfp_led.patch
-    patch -p1 --dry-run < ./mrvl_et6448m_10G_sfp_led.patch
-    echo "10G SFP LED fix test"
-    patch -p1 < ./mrvl_et6448m_10G_sfp_led.patch
-
     # wheel
     sed -i '/keep pip installed/i \
 sudo https_proxy=$https_proxy LANG=C chroot $FILESYSTEM_ROOT pip install wheel' build_debian.sh
