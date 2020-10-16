@@ -215,10 +215,19 @@ inband_mgmt(){\
 
 nokia_hw_sku()
 {
-   mkdir -p device/nokia/armhf-nokia_ixs7215_52x-r0 
-   # Download hwsku
+#   mkdir -p device/nokia/armhf-nokia_ixs7215_52x-r0 
+    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/hw_support_nokia.patch
+    patch -p1 --dry-run < ./hw_support_nokia.patch
+    echo "Nokia platform support armhf"
+    patch -p1 < ./hw_support_nokia.patch
+    
+   # Download hwsku and over-write the hwsku folder
    wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/mrvl-nokia_sonic_m0_hwsku.tgz
    tar -C device/nokia/armhf-nokia_ixs7215_52x-r0 -xzf mrvl-nokia_sonic_m0_hwsku.tgz
+
+   # Download hwsku and over-write the platform folder
+   wget -c https://raw.githubusercontent.com/Marvell-switching/sonic-scripts/master/files/mrvl-nokia_sonic_m0_platform.tgz
+   tar -C platform/marvell-armhf/sonic-platform-nokia -xzf mrvl-nokia_sonic_m0_platform.tgz
 }
 
 apply_buster_kernel()
