@@ -326,6 +326,12 @@ sudo https_proxy=$https_proxy LANG=C chroot $FILESYSTEM_ROOT pip install wheel' 
     popd
 }
 
+update_sai_deb()
+{
+    # Using sai deb from xps branch
+    sed -i 's/mrvllibsai_/mrvllibsai_xps_202006_/g' platform/marvell-armhf/sai.mk
+}
+
 main()
 {
     sonic_buildimage_commit=`git rev-parse HEAD`
@@ -355,6 +361,8 @@ main()
     build_kernel_buster
 
     master_armhf_fix
+
+    update_sai_deb
 }
 
 main $@

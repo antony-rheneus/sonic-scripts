@@ -57,15 +57,23 @@ index 1959bb5..dfd98c6 100644
          libpython2.7         \
          libdaemon0           \
 diff --git a/dockers/docker-database/Dockerfile.j2 b/dockers/docker-database/Dockerfile.j2
-index e14be96..6ffc2c3 100644
+index e14be96..ce29659 100644
 --- a/dockers/docker-database/Dockerfile.j2
 +++ b/dockers/docker-database/Dockerfile.j2
 @@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive
  RUN apt-get update
- 
+
  # install redis-server
 -RUN apt-get install -y redis-server=5:6.0.5-1~bpo10+1
 +RUN apt-get install -y redis-server=5:6.0.8-1~bpo10+1
- 
+
  {% if docker_database_debs.strip() -%}
  # Copy locally-built Debian package dependencies
+@@ -32,6 +32,7 @@ RUN apt-get clean -y                                  && \
+              s/^# syslog-enabled no$/syslog-enabled no/; \
+              s/^# unixsocket/unixsocket/;                \
+              s/redis-server.sock/redis.sock/g;           \
++             s/lua-time-limit 5000/lua-time-limit 20000/g; \
+              s/^client-output-buffer-limit pubsub [0-9]+mb [0-9]+mb [0-9]+/client-output-buffer-limit pubsub 0 0 0/ \
+             ' /etc/redis/redis.conf
+
